@@ -49,15 +49,22 @@ public class PHEmptyDataSet extends RelativeLayout{
     public  PHEmptyDataSetDelegate delegate;
     private ViewGroup msuperGroup;
     private View mfatherView;
+    private ImageView imageBTN;
+    private TextView  titleV;
+    private boolean isFirstCreated;
 
     public PHEmptyDataSet(Context context,  ViewGroup superGroup, View fatherView){
         super(context);
         mcontext = context;
         if (fatherView != null){
+            this.isFirstCreated = false;
             this.msuperGroup = superGroup;
             this.mfatherView = fatherView;
             ViewGroup.LayoutParams mparam = mfatherView.getLayoutParams();
             this.setLayoutParams(mparam);
+            this.imageBTN = new ImageView(mcontext);
+            this.imageBTN.setId(9527);
+            titleV = new TextView(mcontext);
         }
     }
 
@@ -99,10 +106,6 @@ public class PHEmptyDataSet extends RelativeLayout{
         }
         setBackgroundColor(color);
 
-
-        ImageView imageBTN = new ImageView(mcontext);
-        imageBTN.setId(9527);
-
         String title ;
         Drawable draw;
         Integer titleColor;
@@ -135,7 +138,6 @@ public class PHEmptyDataSet extends RelativeLayout{
 
         imageBTN.setImageDrawable(draw);
         imageBTN.setScaleType(ImageView.ScaleType.FIT_XY);
-        TextView titleV = new TextView(mcontext);
         titleV.setText(title);
         titleV.setTextColor(titleColor);
         titleV.setTextSize(titleSize);
@@ -153,9 +155,12 @@ public class PHEmptyDataSet extends RelativeLayout{
 
         imageBTN.setLayoutParams(param1);
         titleV.setLayoutParams(param2);
-        addView(titleV);
-        addView(imageBTN);
 
+        if (!isFirstCreated){
+            addView(titleV);
+            addView(imageBTN);
+            isFirstCreated = true;
+        }
          Boolean isAllowedClick = delegate.didTapEmptyDataView(this,type);
         if (isAllowedClick == null)
         {
