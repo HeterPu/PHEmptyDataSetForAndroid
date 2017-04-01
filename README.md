@@ -13,7 +13,7 @@ See `MyApplication`
 
 Picture picked from ios(PHEmptyDataSet),the funtion and result reach the same.
 <img src="https://raw.github.com/HeterPu/PHEmptyDataSet/master/snapshot/1.png" width="760"><br/>
-<img src="https://raw.github.com/HeterPu/PHEmptyDataSet/master/snapshot/2.png" width="760"><br/>
+<img src="https://raw.github.com/HeterPu/PHEmptyDataSetForAndroid/master/snapshot/2.png" width="760"><br/>
 
 
 Installation
