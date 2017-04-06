@@ -13,16 +13,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
+
 /**
  * Created by peterhu on 2017/3/30.
  */
 
 public class PHEmptyDataSet extends RelativeLayout{
 
-/*
-* 没有网络的时候PHEmptyNoDataNoNetwork;
-* 没有数据的时候PHEmptyNoData;
-* */
+    /*
+    * 没有网络的时候PHEmptyNoDataNoNetwork;
+    * 没有数据的时候PHEmptyNoData;
+    * */
     public enum TapNoDataType {
         PHEmptyNoDataNoNetwork,
         PHEmptyNoData,
@@ -53,27 +55,22 @@ public class PHEmptyDataSet extends RelativeLayout{
     private TextView  titleV;
     private boolean isFirstCreated;
 
-    public PHEmptyDataSet(Context context,  ViewGroup superGroup, View fatherView){
-        super(context);
-        mcontext = context;
-        if (fatherView != null){
-            this.isFirstCreated = false;
-            this.msuperGroup = superGroup;
-            this.mfatherView = fatherView;
-            ViewGroup.LayoutParams mparam = mfatherView.getLayoutParams();
-            this.setLayoutParams(mparam);
-            this.imageBTN = new ImageView(mcontext);
-            this.imageBTN.setId(9527);
-            titleV = new TextView(mcontext);
-        }
+    public PHEmptyDataSet(View fatherView){
+        super(fatherView.getContext());
+        mcontext = fatherView.getContext();
+        this.isFirstCreated = false;
+        this.msuperGroup = (ViewGroup) fatherView.getParent();
+        this.mfatherView = fatherView;
+        ViewGroup.LayoutParams mparam = mfatherView.getLayoutParams();
+        this.setLayoutParams(mparam);
+        this.imageBTN = new ImageView(mcontext);
+        this.imageBTN.setId(9527);
+        titleV = new TextView(mcontext);
     }
 
-    public PHEmptyDataSet(Context context){
-        this(context,null,null);
-    }
 
     public void hasData(){
-         switchView(false);
+        switchView(false);
     }
 
     public  void  noData(){
@@ -88,19 +85,19 @@ public class PHEmptyDataSet extends RelativeLayout{
     private void setPHEmptyDataSetWithType(TapNoDataType type){
 
 
-        Integer verticalOff  = delegate.verticalOffsetForEmptyDataSet(this,type);
+        Integer verticalOff  = delegate == null ? null: delegate.verticalOffsetForEmptyDataSet(this,type);
         if (verticalOff == null) {
-           verticalOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_h_noData : PHEmptyDataSetConstants.DataSet_offset_h_noNetWork;
+            verticalOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_h_noData : PHEmptyDataSetConstants.DataSet_offset_h_noNetWork;
         }
 
 
-        Integer horizonOff = delegate.horizonOffsetForEmptyDataSet(this,type);
+        Integer horizonOff = delegate == null ? null: delegate.horizonOffsetForEmptyDataSet(this,type);
         if (horizonOff == null) {
             horizonOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_v_noData : PHEmptyDataSetConstants.DataSet_offset_v_noNetWork;
         }
 
 
-        Integer color = delegate.backgroundColorForEmptyDataSet(this,type);
+        Integer color = delegate == null ? null: delegate.backgroundColorForEmptyDataSet(this,type);
         if (color == null){
             color = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_backGround_noData : PHEmptyDataSetConstants.DataSet_backGround_noNetWork;
         }
@@ -112,7 +109,7 @@ public class PHEmptyDataSet extends RelativeLayout{
         Float titleSize;
         Integer mwidth;
         Integer mheight;
-        Button button = delegate.viewForEmptyDataSet(this,type);
+        Button button = delegate == null ? null: delegate.viewForEmptyDataSet(this,type);
         if (button == null){
             title = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_title_noData : PHEmptyDataSetConstants.DataSet_title_noNetWork;
             draw = (type == TapNoDataType.PHEmptyNoData) ?  new BitmapDrawable(getResources(),BitmapFactory.decodeResource(getResources(),
@@ -161,7 +158,7 @@ public class PHEmptyDataSet extends RelativeLayout{
             addView(imageBTN);
             isFirstCreated = true;
         }
-         Boolean isAllowedClick = delegate.didTapEmptyDataView(this,type);
+        Boolean isAllowedClick = delegate == null ? null: delegate.didTapEmptyDataView(this,type);
         if (isAllowedClick == null)
         {
             isAllowedClick = type != TapNoDataType.PHEmptyNoData;
@@ -181,7 +178,7 @@ public class PHEmptyDataSet extends RelativeLayout{
 
     private void switchView(boolean isChange) {
         if (isChange) {
-            AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(mcontext,R.anim.alphato1);
+            AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(mcontext, R.anim.alphato1);
             this.startAnimation(alphaAnimation);
             msuperGroup.removeView(mfatherView);
             msuperGroup.addView(this);
@@ -190,7 +187,7 @@ public class PHEmptyDataSet extends RelativeLayout{
         {
             AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(mcontext,R.anim.alphato1);
             mfatherView.startAnimation(alphaAnimation);
-            msuperGroup.addView(mfatherView);
+            if (mfatherView.getParent() == null){msuperGroup.addView(mfatherView);}
             msuperGroup.removeView(this);
         }
     }

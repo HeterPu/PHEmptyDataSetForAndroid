@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity  implements PHEmptyDataSet.P
         mainL.addView(btn);
        btn.setText("hello!");
 
-        final PHEmptyDataSet testV2 = new PHEmptyDataSet(this,mainL,btn);
+        final PHEmptyDataSet testV2 = new PHEmptyDataSet(btn);
         testV2.delegate = this;
         testV2.setBackgroundColor(Color.CYAN);
 
