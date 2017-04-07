@@ -87,13 +87,13 @@ public class PHEmptyDataSet extends RelativeLayout{
 
         Integer verticalOff  = delegate == null ? null: delegate.verticalOffsetForEmptyDataSet(this,type);
         if (verticalOff == null) {
-            verticalOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_h_noData : PHEmptyDataSetConstants.DataSet_offset_h_noNetWork;
+            verticalOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_v_noData : PHEmptyDataSetConstants.DataSet_offset_v_noNetWork;
         }
 
 
         Integer horizonOff = delegate == null ? null: delegate.horizonOffsetForEmptyDataSet(this,type);
         if (horizonOff == null) {
-            horizonOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_v_noData : PHEmptyDataSetConstants.DataSet_offset_v_noNetWork;
+            horizonOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_h_noData : PHEmptyDataSetConstants.DataSet_offset_h_noNetWork;
         }
 
 
