@@ -20,20 +20,19 @@ import android.widget.TextView;
  */
 
 public class PHEmptyDataSet extends RelativeLayout{
-
+    
     /*
-    * 没有网络的时候PHEmptyNoDataNoNetwork;
-    * 没有数据的时候PHEmptyNoData;
-    * */
+     * 没有网络的时候PHEmptyNoDataNoNetwork;
+     * 没有数据的时候PHEmptyNoData;
+     * */
     public enum TapNoDataType {
         PHEmptyNoDataNoNetwork,
         PHEmptyNoData,
     }
-
+    
     /*
-    *
-    *
-    * */
+     *
+     * */
     public interface PHEmptyDataSetDelegate {
         // 点击图片实现加载，通过返回bool值决定视图是否消失,不设置返回null，使用默认配置。
         Boolean  didTapEmptyDataView(RelativeLayout layout,TapNoDataType type);
@@ -46,7 +45,7 @@ public class PHEmptyDataSet extends RelativeLayout{
         //设置水平偏移
         Integer horizonOffsetForEmptyDataSet(RelativeLayout layout, TapNoDataType type);
     }
-
+    
     public  Context mcontext;
     public  PHEmptyDataSetDelegate delegate;
     private ViewGroup msuperGroup;
@@ -54,7 +53,7 @@ public class PHEmptyDataSet extends RelativeLayout{
     private ImageView imageBTN;
     private TextView  titleV;
     private boolean isFirstCreated;
-
+    
     public PHEmptyDataSet(View fatherView){
         super(fatherView.getContext());
         mcontext = fatherView.getContext();
@@ -67,42 +66,39 @@ public class PHEmptyDataSet extends RelativeLayout{
         this.imageBTN.setId(9527);
         titleV = new TextView(mcontext);
     }
-
-
+    
+    
     public void hasData(){
         switchView(false);
     }
-
+    
     public  void  noData(){
         setPHEmptyDataSetWithType(TapNoDataType.PHEmptyNoData);
     }
-
+    
     public  void noNetWork(){
         setPHEmptyDataSetWithType(TapNoDataType.PHEmptyNoDataNoNetwork);
     }
-
-
+    
     private void setPHEmptyDataSetWithType(TapNoDataType type){
-
-
+        
+        imageBTN.setClickable(true);
         Integer verticalOff  = delegate == null ? null: delegate.verticalOffsetForEmptyDataSet(this,type);
         if (verticalOff == null) {
             verticalOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_v_noData : PHEmptyDataSetConstants.DataSet_offset_v_noNetWork;
         }
-
-
+        
         Integer horizonOff = delegate == null ? null: delegate.horizonOffsetForEmptyDataSet(this,type);
         if (horizonOff == null) {
             horizonOff = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_offset_h_noData : PHEmptyDataSetConstants.DataSet_offset_h_noNetWork;
         }
-
-
+        
         Integer color = delegate == null ? null: delegate.backgroundColorForEmptyDataSet(this,type);
         if (color == null){
             color = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_backGround_noData : PHEmptyDataSetConstants.DataSet_backGround_noNetWork;
         }
         setBackgroundColor(color);
-
+        
         String title ;
         Drawable draw;
         Integer titleColor;
@@ -113,8 +109,8 @@ public class PHEmptyDataSet extends RelativeLayout{
         if (button == null){
             title = (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_title_noData : PHEmptyDataSetConstants.DataSet_title_noNetWork;
             draw = (type == TapNoDataType.PHEmptyNoData) ?  new BitmapDrawable(getResources(),BitmapFactory.decodeResource(getResources(),
-                    PHEmptyDataSetConstants.DataSet_pic_noData)) : new BitmapDrawable(getResources(),BitmapFactory.decodeResource(getResources(),
-                    PHEmptyDataSetConstants.DataSet_pic_noNetWork));
+                                                                                                                           PHEmptyDataSetConstants.DataSet_pic_noData)) : new BitmapDrawable(getResources(),BitmapFactory.decodeResource(getResources(),
+                                                                                                                                                                                                                                         PHEmptyDataSetConstants.DataSet_pic_noNetWork));
             titleColor =  (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_titleColor_noData : PHEmptyDataSetConstants.DataSet_titleColor_noNetWork;
             titleSize =  (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_titleSize_noData : PHEmptyDataSetConstants.DataSet_titleSize_noNetWork;
             mwidth =  (type == TapNoDataType.PHEmptyNoData) ? PHEmptyDataSetConstants.DataSet_width_noData : PHEmptyDataSetConstants.DataSet_width_noNetWork;
@@ -129,10 +125,10 @@ public class PHEmptyDataSet extends RelativeLayout{
             mwidth = button.getLayoutParams().width;
             mheight = button.getLayoutParams().height;
         }
-
+        
         Integer superHeight =  getLayoutParams().height == -1 ? msuperGroup.getHeight():getLayoutParams().height;
         Integer superWidth =  getLayoutParams().width == -1 ? msuperGroup.getWidth():getLayoutParams().width;
-
+        
         imageBTN.setImageDrawable(draw);
         imageBTN.setScaleType(ImageView.ScaleType.FIT_XY);
         titleV.setText(title);
@@ -144,50 +140,56 @@ public class PHEmptyDataSet extends RelativeLayout{
         param1.addRule(RelativeLayout.ALIGN_PARENT_START);
         param1.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         param2.addRule(RelativeLayout.BELOW,9527);
-
+        
         param1.topMargin = (superHeight - param1.height) / 2 + verticalOff;
         param1.leftMargin = (superWidth - param1.width) / 2 + horizonOff;
         param2.topMargin = PHEmptyDataSetConstants.DataSet_Image_title_padding;
         param2.leftMargin = (superWidth - param2.width) / 2 + horizonOff;
-
+        
         imageBTN.setLayoutParams(param1);
         titleV.setLayoutParams(param2);
-
+        
         if (!isFirstCreated){
             addView(titleV);
             addView(imageBTN);
             isFirstCreated = true;
         }
+        
         final TapNoDataType mtype = type;
         imageBTN.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                imageBTN.setClickable(false);
                 Boolean isAllowedClick = delegate == null ? null: delegate.didTapEmptyDataView(PHEmptyDataSet.this,mtype);
-                if (isAllowedClick == null)
-                {
-                    isAllowedClick = mtype != TapNoDataType.PHEmptyNoData;
-                }
-                if (isAllowedClick) {
-                    PHEmptyDataSet.this.hasData();
-                }
+                if (isAllowedClick == null){isAllowedClick = false;}
+                if (isAllowedClick) {PHEmptyDataSet.this.hasData();}
             }
         });
         switchView(true);
     }
-
+    
     private void switchView(boolean isChange) {
         if (isChange) {
             AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(mcontext, R.anim.alphato1);
-            this.startAnimation(alphaAnimation);
-            msuperGroup.removeView(mfatherView);
-            if(this.getParent() == null){ msuperGroup.addView(this);}
+            
+            int index = msuperGroup.indexOfChild(mfatherView);
+            if (index != -1){
+                msuperGroup.removeView(mfatherView);
+            }
+            if((this.getParent() == null)&&(index != -1)){
+                msuperGroup.addView(this,index);
+                this.startAnimation(alphaAnimation);}
         }
         else
         {
             AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(mcontext,R.anim.alphato1);
-            mfatherView.startAnimation(alphaAnimation);
-            if (mfatherView.getParent() == null){msuperGroup.addView(mfatherView);}
-            msuperGroup.removeView(this);
+            int index = msuperGroup.indexOfChild(this);
+            if (index != -1){
+                msuperGroup.removeView(this);
+            }
+            if ((mfatherView.getParent() == null)&&(index != -1)){
+                msuperGroup.addView(mfatherView,index);
+                mfatherView.startAnimation(alphaAnimation);}
         }
     }
 }
