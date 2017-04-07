@@ -158,17 +158,16 @@ public class PHEmptyDataSet extends RelativeLayout{
             addView(imageBTN);
             isFirstCreated = true;
         }
-        Boolean isAllowedClick = delegate == null ? null: delegate.didTapEmptyDataView(this,type);
-        if (isAllowedClick == null)
-        {
-            isAllowedClick = type != TapNoDataType.PHEmptyNoData;
-        }
-
-        final boolean isAllowedC = isAllowedClick;
+        final TapNoDataType mtype = type;
         imageBTN.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAllowedC) {
+                Boolean isAllowedClick = delegate == null ? null: delegate.didTapEmptyDataView(PHEmptyDataSet.this,mtype);
+                if (isAllowedClick == null)
+                {
+                    isAllowedClick = mtype != TapNoDataType.PHEmptyNoData;
+                }
+                if (isAllowedClick) {
                     PHEmptyDataSet.this.hasData();
                 }
             }
