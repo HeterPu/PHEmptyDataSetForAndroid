@@ -181,7 +181,7 @@ public class PHEmptyDataSet extends RelativeLayout{
             AlphaAnimation alphaAnimation = (AlphaAnimation) AnimationUtils.loadAnimation(mcontext, R.anim.alphato1);
             this.startAnimation(alphaAnimation);
             msuperGroup.removeView(mfatherView);
-            msuperGroup.addView(this);
+            if(this.getParent() == null){ msuperGroup.addView(this);}
         }
         else
         {
