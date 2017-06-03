@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 public class PHEmptyDataSet extends RelativeLayout{
     
-    /*
+    /**
      * 没有网络的时候PHEmptyNoDataNoNetwork;
      * 没有数据的时候PHEmptyNoData;
      * */
@@ -30,19 +30,48 @@ public class PHEmptyDataSet extends RelativeLayout{
         PHEmptyNoData,
     }
     
-    /*
-     *
+    /**
+     * 代理接口
      * */
     public interface PHEmptyDataSetDelegate {
-        // 点击图片实现加载，通过返回bool值决定视图是否消失,不设置返回null，使用默认配置。
+        /**
+         * 点击图片实现加载，通过返回bool值决定视图是否消失,不设置返回null，使用默认配置。
+         * @param layout 布局
+         * @param type 无数据类型
+         * @return 返回值
+         */
         Boolean  didTapEmptyDataView(RelativeLayout layout,TapNoDataType type);
-        // 获取自定义的视图，不设置返回null，使用默认配置。
+
+        /**
+         * 获取自定义的视图，不设置返回null，使用默认配置。
+         * @param layout 布局
+         * @param type 无数据类型
+         * @return 返回的按钮
+         */
         Button  viewForEmptyDataSet(RelativeLayout layout,TapNoDataType type);
-        //设置背景颜色
+
+        /**
+         * 设置背景颜色
+         * @param layout  布局
+         * @param type 无数据类型
+         * @return 返回的颜色值
+         */
         Integer backgroundColorForEmptyDataSet(RelativeLayout layout,TapNoDataType type);
-        //设置垂直偏移量
+
+        /**
+         * 设置垂直偏移量
+         * @param layout 布局
+         * @param type 无数据类型
+         * @return 返回垂直偏移量
+         */
         Integer verticalOffsetForEmptyDataSet(RelativeLayout layout,TapNoDataType type);
-        //设置水平偏移
+
+        /**
+         * 设置水平偏移
+         * @param layout 布局
+         * @param type 无数据类型
+         * @return 返回水平偏移量
+         */
         Integer horizonOffsetForEmptyDataSet(RelativeLayout layout, TapNoDataType type);
     }
     
@@ -66,20 +95,30 @@ public class PHEmptyDataSet extends RelativeLayout{
         this.imageBTN.setId(9527);
         titleV = new TextView(mcontext);
     }
-    
-    
+
+
+    /**
+     * 有数据的时候调用，数据大于一条。
+     */
     public void hasData(){
         switchView(false);
     }
-    
+
+    /**
+     * 无数据时调用
+     */
     public  void  noData(){
         setPHEmptyDataSetWithType(TapNoDataType.PHEmptyNoData);
     }
-    
+
+    /**
+     * 无网络时调用
+     */
     public  void noNetWork(){
         setPHEmptyDataSetWithType(TapNoDataType.PHEmptyNoDataNoNetwork);
     }
-    
+
+
     private void setPHEmptyDataSetWithType(TapNoDataType type){
         
         imageBTN.setClickable(true);
